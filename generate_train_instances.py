@@ -92,6 +92,9 @@ def generate_instances(args):
 
 
 if __name__ == '__main__':
+    # python generate_train_instances.py train_data/20 20 --n_instances 5000 --save_freq 100
+    # Generates train instances in train_data/20 folder, with 20 nodes per instance. Creates 5000 instances, 
+    # saving every 100 instances.
     parser = argparse.ArgumentParser(description='Generate Instances')
     parser.add_argument(
         'save_dir', help="Location to save generated instances")

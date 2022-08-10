@@ -23,6 +23,15 @@ import source.MODEL__Actor.grouped_actors2 as A_Module
 import source.TRAIN_N_EVAL.Train_Grouped_Actors as T_Module
 import source.TRAIN_N_EVAL.Evaluate__Grouped_Actors as E_Module
 
+######################
+# EXAMPLE RUN
+######################
+
+# python Train.py MY_RUN 20 train_data/20 --test_data_dir test_data/20 --augment_data --m 10
+# Runs Training algorithm, using data in train_data/20 on instances with 20 nodes. Test data in folder test_data/20
+# Data is flipped and rotated to augment dataset and top 10 moves are selected for first and second step, resulting 
+# in 100 rollouts of each instance (group size = 100). 
+
 
 ######################
 # PARSE INPUTS
@@ -30,14 +39,22 @@ import source.TRAIN_N_EVAL.Evaluate__Grouped_Actors as E_Module
 parser = argparse.ArgumentParser(description='Train Model')
 
 parser.add_argument('run_name', help='Name of Run. Used to generate output folder.')
+# Data args
 parser.add_argument('problem_size', type=int, help='Integer size of problem data. Must match data found in data_dir')
 parser.add_argument('train_data_dir', help='Dir where data is located. Must contain instances.npy and adjs.npy')
-parser.add_argument('--m', type=int, help='Do mxm 2-step rollouts selecting top m options twice. -1 indicates no forced steps rollout. Defaults to -1', default=-1)
-parser.add_argument('--deterministic', help='Changes the Train environments to deterministic.', action='store_true')
 parser.add_argument('--test_data_dir', help='Dir where test set is located. Defaults to using train set for validation')
+# Increase Dataset size through augmentation (rotations and flips)
+parser.add_argument('--augment_data', help='Toggles on 8x data augmentation.', action='store_true')
+# Force forced initial exploration (--m 5 will result in top 5 moves being executed on first step and 5 moves per second state 
+# being executed on the second step, for a total of 25 rollouts)
+parser.add_argument('--m', type=int, help='Do mxm 2-step rollouts selecting top m options twice. -1 indicates no forced steps rollout. Defaults to -1', default=-1)
+# Useful for debugging
+parser.add_argument('--deterministic', help='Changes the Train environments to deterministic.', action='store_true')
+# Epochs and Batches
 parser.add_argument('--epochs', type=int, help='Total Epochs to run. Defaults to 2000', default=2000)
 parser.add_argument('--batch_size', type=int, help='Batch Size for training. Defaults to 64', default=64)
 parser.add_argument('--test_batch_size', type=int, help='Batch Size for testing. Defaults to 256', default=256)
+# Model params
 parser.add_argument('--embedding_dim', type=int, help='Embedding Dim size. Defaults to 128', default=128)
 parser.add_argument('--key_dim', type=int, help='Key Dim size. Defaults to 16', default=16)
 parser.add_argument('--head_num', type=int, help='Head Number. Defaults to 8', default=8)
@@ -49,10 +66,11 @@ parser.add_argument('--actor_lr', type=float, help='Learning rate for actor. Def
 parser.add_argument('--actor_wd', type=float, help='Actor weight decay. Defaults to 1e-6', default=1e-6)
 parser.add_argument('--lr_decay_epoch', type=int, help='Defaults to 1', default=1)
 parser.add_argument('--lr_decay_gamma', type=float, help='Defaults to 1.00', default=1.00)
+# Utility features
 parser.add_argument('--log_period_sec', type=int, help='Time between logging outputs in seconds. Defaults to 15.', default=15)
 parser.add_argument('--dataset_mode', type=int, help="0 (Default): NPY Files, 1: From CSV, 2: Random", default=0)
-parser.add_argument('--augment_data', help='Toggles on 8x data augmentation.', action='store_true')
 parser.add_argument('--checkpoint_freq', type=int, help='Number of epochs between checkpoints. Defaults to 100', default=100)
+# Modifications to environment (extension beyond competition work)
 parser.add_argument('--max_time_pen_mult', type=float, default=-1., help='Max time penalty = mult * problem_size. Defaults to -1')
 parser.add_argument('--dist', default='normal', help='Use a right skewed dist instead of a uniform dist. Options are ["normal", "rayleigh"]')
 args = parser.parse_args()

@@ -275,20 +275,20 @@ def create_tours(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run Trained Model')
     parser.add_argument('index', type=int, help='Index of instance to run active search on (uses 1-indexing)')
+    parser.add_argument('--data_dir', default='./data/test', help='Dir where data is stored. Defaults to "./data/test"')
     parser.add_argument('--tour_dir', default='./tours', help='Dir where tours are saved to. Defaults to "./tours"')
     parser.add_argument('--base_load_dir', default='./models/base',
                         help='Dir where base models are stored. Defaults to "./models/base/"')
     parser.add_argument('--seed', type=int, default=19120623, help='Random seed to use when generating tours.')
+    parser.add_argument('--mc', action='store_true', help='Turn on Monte Carlo Simulations')
     parser.add_argument('--mc_num_moves', type=int, default=5, help='Number of moves to run monte carlo rollouts on.')
     parser.add_argument('--mc_num_samples_per_move', type=int, default=600, help='Number of samples to rollout for each '
                                                                                'of the top moves.')
     parser.add_argument('--mc_second_step_num', type=int, default=1, help='Number of second actions to take for each first in MC')
-    parser.add_argument('--mc_all_first', action='store_true', help="Go to all feasible first nodes")
-    parser.add_argument('--mc', action='store_true', help='Turn on Monte Carlo Simulations')
+    parser.add_argument('--mc_all_first', action='store_true', help="Go to all feasible first nodes on first step")
     parser.add_argument('--encoding_load_dir', default='./models/encodings',
                         help='Root directory to store best encodings. Defaults to "./models/encodings"')
     parser.add_argument('--mc_combine_first', action='store_true', help='Combine the expected value of all second moves')
-    parser.add_argument('--data_dir', default='./data/test', help='Dir where data is stored. Defaults to "./data/test"')
     parser.add_argument('--mc_sample', action='store_true', help='Monte Carlo samples from distribution instead of greedy')
     parser.add_argument('--use_expected', action='store_true', help='Use the expected travel times for each step')
     parser.add_argument('--deterministic', action='store_true', help='Use deterministic model envs')
