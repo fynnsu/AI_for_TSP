@@ -14,3 +14,12 @@ This Repository contains the winning solution to the AI For TSP Competition Trac
 - André Hottung
 - Kevin Tierney
 - Meinolf Sellmann
+
+# Acknowledgements
+Our solution is built using code from the original POMO paper by Kwon et al. \
+Paper: https://arxiv.org/abs/2010.16011 \
+Code: https://github.com/yd-kwon/POMO
+
+We extend our solution using the Efficient Active Search method described by Hottung et al. \
+Paper: https://arxiv.org/abs/2106.05126 \
+Code: https://github.com/ahottung/EAS
